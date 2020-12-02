@@ -36,7 +36,7 @@ public class Person{
 	
 	@OneToOne(optional = true, cascade = CascadeType.PERSIST)
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@JoinColumn(name = "cardID")
+	@JoinColumn(name = "accountNumber")
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}

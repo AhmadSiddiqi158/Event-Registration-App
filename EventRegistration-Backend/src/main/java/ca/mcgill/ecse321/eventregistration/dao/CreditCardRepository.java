@@ -8,6 +8,6 @@ import ca.mcgill.ecse321.eventregistration.model.CreditCard;
 @Repository
 public interface CreditCardRepository extends CrudRepository <CreditCard, String> {
 	
-	CreditCard findCreditCardBycardID(String cardID);
+	CreditCard findCreditCardByaccountNumber(String cardID);
 
 }

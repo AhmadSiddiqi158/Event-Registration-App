@@ -8,7 +8,7 @@ import ca.mcgill.ecse321.eventregistration.model.Theatre;
 @Repository
 public interface TheatreRepository extends CrudRepository<Theatre, String> {
 
-	Theatre findTheatreBytitle(String title);
+	Theatre findTheatreByname(String title);
 
 }
 

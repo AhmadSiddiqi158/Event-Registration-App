@@ -25,6 +25,8 @@ public class EventRegistrationService {
 	private RegistrationRepository registrationRepository;
 	@Autowired
 	private TheatreRepository theatreRepository;
+	@Autowired
+	private CreditCardRepository creditCardRepository;
 
 	@Transactional
 	public Person createPerson(String name) {
@@ -187,14 +189,15 @@ public class EventRegistrationService {
 		}
 		return resultList;
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
+	@Transactional
 	public Theatre buildTheatre(Theatre theatre, String name, Date date, Time startTime, Time endTime, String title) {
 		// Input validation
 		String error = "";
 		if (name == null || name.trim().length() == 0) {
 			error = error + "Event name cannot be empty! ";
-		} else if (theatreRepository.existsById(title)) {
+		} else if (theatreRepository.existsById(name)) {
 			throw new IllegalArgumentException("Theatre has already been created!");
 		}
 		if (date == null) {
@@ -212,7 +215,7 @@ public class EventRegistrationService {
 		if (title == null || title.trim().length() == 0) {
 			error = error + "Theatre title cannot be empty!";
 		}
-		
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -224,7 +227,7 @@ public class EventRegistrationService {
 		theatre.setTitle(title);
 		return theatre;
 	}
-	
+
 	@Transactional
 	public Theatre createTheatre(String name, Date date, Time startTime, Time endTime, String title) {
 		Theatre theatre = new Theatre();
@@ -238,5 +241,63 @@ public class EventRegistrationService {
 	public List<Theatre> getAllTheatres() {
 		return toList(theatreRepository.findAll());
 	}
-	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Helper method
+	private static boolean isValid(String s) {
+		s= s.trim();
+		String dash = Character.toString(s.charAt(4));
+		boolean valid = true;
+		if(s.length()==9 &&  dash.equals("-")) {		
+			for (int i = 0; i < s.length(); i++) {
+				if(Character.isAlphabetic(s.charAt(i)) ) {
+					valid=false;
+					break;
+				}
+			}
+			
+		}
+		else {
+			valid = false;
+		}
+		return valid;
+	}
+
+	@Transactional
+	public CreditCard buildCreditCard(CreditCard creditCard, String cardID, Integer amount) {
+		// Input validation
+		String error = "";
+		if (cardID == null || cardID.trim().length() == 0 || !isValid(cardID)) {
+			error = error + "Account number is null or has wrong format!";
+		} else if (creditCardRepository.existsById(cardID)) {
+			throw new IllegalArgumentException("CreditCard has already been created!");
+		}
+		if (amount == null) {
+			error = error + "amount cannot be empty! ";
+		}
+
+
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		creditCard.setAccountNumber(cardID);
+		creditCard.setAmount(amount);
+
+		return creditCard;
+	}
+
+	@Transactional
+	public CreditCard createCreditCardPay(String cardId, double amount) {
+		CreditCard creditCard = new CreditCard();
+		buildCreditCard(creditCard,cardId, (int)amount);
+		creditCardRepository.save(creditCard);
+		return creditCard;	
+	}
+
+	//	@Transactional
+	//	public void pay(Registration registration, CreditCard creditCard) {
+	//		int registrationAmount = registration.
+	//	}
+
 }

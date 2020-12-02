@@ -10,14 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 
 public class CreditCard {
 
-	public CreditCard(String aCardID, double aAmount, Person aPerson)
+	public CreditCard(String aCardID, int aAmount, Person aPerson)
 	{
-		this.cardID = aCardID;
+		this.accountNumber = aCardID;
 		this.amount = aAmount;
 		if (aPerson == null || aPerson.getCreditCard() != null)
 		{
@@ -27,36 +29,45 @@ public class CreditCard {
 		this.registrations = new ArrayList<Registration>();
 	}
 
-	public CreditCard(String aCardID, double aAmount, String aNameForPerson, RegistrationManager aRegistrationManagerForPerson)
+	public CreditCard(String aCardID, int aAmount, String aNameForPerson, RegistrationManager aRegistrationManagerForPerson)
 	{
-		cardID = aCardID;
+		accountNumber = aCardID;
 		amount = aAmount;
 		person = new Person(aNameForPerson, aRegistrationManagerForPerson, this);
 		registrations = new ArrayList<Registration>();
 	}
+	
+	public CreditCard (String cardID, double amount) {
+		this.accountNumber=cardID;
+		this.amount= (int) amount;
+	}
+	
+	public CreditCard() {
+		this.accountNumber = null;
+		this.amount = 0;
+		this.person = null;
+		this.registrations = null;
+		
+	}
 
-	//------------------------
-	// INTERFACE
-	//------------------------
-	private String cardID;
+	private String accountNumber;
 
-	public void setCardID(String aCardID) {
-		this.cardID = aCardID;
+	public void setAccountNumber(String accoundNumber) {
+		this.accountNumber = accoundNumber;
 	}
 	
 	@Id
-	public String getCardID() {
-		return cardID;
+	public String getAccountNumber() {
+		return accountNumber;
 	}
 
-
-	private double amount;
+	private int amount;
 
 	public void setAmount(double aAmount) {
-		this.amount = aAmount;
+		this.amount = (int) aAmount;
 	}
 	
-	public double getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 
@@ -75,8 +86,8 @@ public class CreditCard {
 	
 	@ElementCollection
 	public List<Registration> getRegistrations() {
-		List<Registration> newRegistrations = Collections.unmodifiableList(registrations);
-		return newRegistrations;
+		
+		return this.registrations;
 	}
 	
 	public void setRegistrations(List<Registration> registrations) {
