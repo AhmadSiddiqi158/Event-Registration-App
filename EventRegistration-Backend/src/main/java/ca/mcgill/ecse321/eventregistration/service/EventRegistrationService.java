@@ -23,6 +23,8 @@ public class EventRegistrationService {
 	private PersonRepository personRepository;
 	@Autowired
 	private RegistrationRepository registrationRepository;
+	@Autowired
+	private TheatreRepository theatreRepository;
 
 	@Transactional
 	public Person createPerson(String name) {
@@ -185,4 +187,56 @@ public class EventRegistrationService {
 		}
 		return resultList;
 	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	public Theatre buildTheatre(Theatre theatre, String name, Date date, Time startTime, Time endTime, String title) {
+		// Input validation
+		String error = "";
+		if (name == null || name.trim().length() == 0) {
+			error = error + "Event name cannot be empty! ";
+		} else if (theatreRepository.existsById(title)) {
+			throw new IllegalArgumentException("Theatre has already been created!");
+		}
+		if (date == null) {
+			error = error + "Event date cannot be empty! ";
+		}
+		if (startTime == null) {
+			error = error + "Event start time cannot be empty! ";
+		}
+		if (endTime == null) {
+			error = error + "Event end time cannot be empty! ";
+		}
+		if (endTime != null && startTime != null && endTime.before(startTime)) {
+			error = error + "Event end time cannot be before event start time!";
+		}
+		if (title == null || title.trim().length() == 0) {
+			error = error + "Theatre title cannot be empty!";
+		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		theatre.setName(name);
+		theatre.setDate(date);
+		theatre.setStartTime(startTime);
+		theatre.setEndTime(endTime);
+		theatre.setTitle(title);
+		return theatre;
+	}
+	
+	@Transactional
+	public Theatre createTheatre(String name, Date date, Time startTime, Time endTime, String title) {
+		Theatre theatre = new Theatre();
+		buildTheatre(theatre, name, date, startTime, endTime,title);
+		theatreRepository.save(theatre);
+		eventRepository.save(theatre);
+		return theatre;
+	}
+
+	@Transactional
+	public List<Theatre> getAllTheatres() {
+		return toList(theatreRepository.findAll());
+	}
+	
 }

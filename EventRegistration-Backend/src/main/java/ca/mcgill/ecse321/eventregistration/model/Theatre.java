@@ -33,17 +33,25 @@ public class Theatre extends Event
     super(aName, aDate, aStartTime, aEndTime, aRegistrationManager);
     title = aTitle;
   }
-
+  public Theatre(String aName, Date aDate, Time aStartTime, Time aEndTime, String aTitle)
+  {
+    super(aName, aDate, aStartTime, aEndTime);
+    title = aTitle;
+  }
+  
+  public Theatre() {
+	  super();
+  }
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setTitle(String aTitle)
+  public void setTitle(String aTitle)
   {
-    boolean wasSet = false;
-    title = aTitle;
-    wasSet = true;
-    return wasSet;
+    //boolean wasSet = false;
+    this.title = aTitle;
+    //wasSet = true;
+    //return title;
   }
   
   public String getTitle()

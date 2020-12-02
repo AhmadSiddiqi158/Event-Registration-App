@@ -34,6 +34,15 @@ public class Event {
     	
 	}
     
+    public Event(String aName, Date aDate, Time aStartTime, Time aEndTime) {
+		// TODO Auto-generated constructor stub
+    	this.name = aName;
+    	this.date = aDate;
+    	this.startTime = aStartTime;
+    	this.endTime = aEndTime;
+    	
+	}
+    
     public Event() {
 		// TODO Auto-generated constructor stub
     	this.name = null;
