@@ -243,7 +243,10 @@ public class EventRegistrationService {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Helper method
+
+	/////////////////
+	//Helper method//
+	/////////////////
 	private static boolean isValid(String s) {
 		s= s.trim();
 		String dash = Character.toString(s.charAt(4));
@@ -255,7 +258,7 @@ public class EventRegistrationService {
 					break;
 				}
 			}
-			
+
 		}
 		else {
 			valid = false;
@@ -269,7 +272,8 @@ public class EventRegistrationService {
 		String error = "";
 		if (cardID == null || cardID.trim().length() == 0 || !isValid(cardID)) {
 			error = error + "Account number is null or has wrong format!";
-		} else if (creditCardRepository.existsById(cardID)) {
+		} 
+		else if (creditCardRepository.existsById(cardID)) {
 			throw new IllegalArgumentException("CreditCard has already been created!");
 		}
 		if (amount == null) {
@@ -295,9 +299,26 @@ public class EventRegistrationService {
 		return creditCard;	
 	}
 
-	//	@Transactional
-	//	public void pay(Registration registration, CreditCard creditCard) {
-	//		int registrationAmount = registration.
-	//	}
+	@Transactional
+	public void pay(Registration registration, CreditCard creditCard) {
+		// Input validation
+		String error = "";
+		if (creditCard == null || registration == null) {
+			error = error + "Registration and payment cannot be null!";
+		} 
+		
+		if (creditCard != null && creditCard.getAmount() < 0 ) {
+			error = error + "Payment amount cannot be negative!";
+		}
+
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		registration.setCreditCard(creditCard);
+		registrationRepository.save(registration);
+		
+	}
+
 
 }

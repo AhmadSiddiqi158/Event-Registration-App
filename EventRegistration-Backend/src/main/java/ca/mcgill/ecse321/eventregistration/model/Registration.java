@@ -1,13 +1,7 @@
 package ca.mcgill.ecse321.eventregistration.model;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -46,15 +40,15 @@ public class Registration {
 		this.event = event;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
-	private Set<CreditCard> creditCards;
+	private CreditCard creditCard;
 	
-	@ElementCollection
-	@ManyToMany(mappedBy = "registrations" ,cascade = { CascadeType.ALL })
-	public Set<CreditCard> getCreditCard() {
-		return this.creditCards;
+	
+	@ManyToOne(optional = true)
+	public CreditCard getCreditCard() {
+		return this.creditCard;
 	}
 
-	public void setCreditCard(Set<CreditCard> creditCards) {
-		this.creditCards = creditCards;
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
 	}
 }
