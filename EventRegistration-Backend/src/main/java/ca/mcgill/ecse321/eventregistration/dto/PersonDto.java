@@ -7,6 +7,7 @@ public class PersonDto {
 
 	private String name;
 	private List<EventDto> eventsAttended;
+	private CreditCardDto creditCard;
 
 	public PersonDto() {
 	}
@@ -25,6 +26,10 @@ public class PersonDto {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public List<EventDto> getEventsAttended() {
 		return eventsAttended;
 	}
@@ -32,4 +37,15 @@ public class PersonDto {
 	public void setEventsAttended(List<EventDto> events) {
 		this.eventsAttended = events;
 	}
+
+	public CreditCardDto getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(CreditCardDto creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	
+	
 }

@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -31,10 +30,10 @@ public class CreditCard {
 
 	public CreditCard(String accountNumber, int aAmount, String aNameForPerson, RegistrationManager aRegistrationManagerForPerson)
 	{
-		accountNumber = accountNumber;
-		amount = aAmount;
-		person = new Person(aNameForPerson, aRegistrationManagerForPerson, this);
-		registrations = new ArrayList<Registration>();
+		this.accountNumber = accountNumber;
+		this.amount = aAmount;
+		this.person = new Person(aNameForPerson, aRegistrationManagerForPerson, this);
+		this.registrations = new ArrayList<Registration>();
 		
 	}
 	
@@ -87,7 +86,6 @@ public class CreditCard {
 	
 	@ElementCollection
 	public List<Registration> getRegistrations() {
-		
 		return this.registrations;
 	}
 	

@@ -8,18 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+import javax.persistence.Table;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.List;
 
 @Entity
-//@Table(name="event")
+@Table(name="event")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType=DiscriminatorType.STRING, name="TYPE")
 
@@ -63,16 +59,7 @@ public class Event {
     public RegistrationManager getRegistrationManager() {
     	return registrationManager;
     }
-    
-//    private Promoter promoter;
-//    
-//    public Promoter getPromoter() {
-//    	return promoter;
-//    }
-//    
-//    public void setPromoter(Promoter promoter) {
-//    	this.promoter = promoter;
-//    }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     private String name;
 

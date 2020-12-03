@@ -13,7 +13,6 @@ public class RegistrationManager {
 	private Set<Person> persons;
 
 	@ElementCollection
-	
 	public Set<Person> getPersons() {
 		return this.persons;
 	}
