@@ -65,6 +65,13 @@ public class EventRegistrationRestController {
 		Registration r = service.register(p, e);
 		return convertToDto(r, p, e);
 	}
+	
+	@PostMapping(value = { "/promoter/{name}", "/promoter/{name}/" })
+	public PromoterDto createPromoter(@PathVariable("name") String name) throws IllegalArgumentException {
+		// @formatter:on
+		Promoter promoter = service.createPromoter(name);
+		return convertToDto(promoter);
+	}
 
 	// GET Mappings
 
@@ -123,6 +130,21 @@ public class EventRegistrationRestController {
 	public EventDto getEventByName(@PathVariable("name") String name) throws IllegalArgumentException {
 		return convertToDto(service.getEvent(name));
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@GetMapping(value = { "/promoter/{name}", "/promoter/{name}/" })
+	public PromoterDto getPromoterByName(@PathVariable("name") String name) throws IllegalArgumentException {
+		return convertToDto(service.getPromoter(name));
+	}
+	
+	@GetMapping(value = { "/promoters", "/promoters/" })
+	public List<PromoterDto> getAllPromoters() {
+		List<PromoterDto> promoters = new ArrayList<>();
+		for (Promoter promoter : service.getAllPromoters()) {
+			promoters.add(convertToDto(promoter));
+		}
+		return promoters;
+	}
 
 	// Model - DTO conversion methods (not part of the API)
 
@@ -156,6 +178,16 @@ public class EventRegistrationRestController {
 		RegistrationDto rDto = new RegistrationDto(pDto, eDto);
 		return rDto;
 	}
+	
+	//DTOs for Promoters
+	private PromoterDto convertToDto(Promoter p) {
+		if (p == null) {
+			throw new IllegalArgumentException("There is no such Promoter!");
+		}
+		PromoterDto promoterDto = new PromoterDto(p.getName());
+		promoterDto.setPromotes(createPromotedEventDtosForPromoter(p));
+		return promoterDto;
+	}
 
 	// return registration dto without peron object so that we are not repeating
 	// data
@@ -181,6 +213,15 @@ public class EventRegistrationRestController {
 		List<Event> eventsForPerson = service.getEventsAttendedByPerson(p);
 		List<EventDto> events = new ArrayList<>();
 		for (Event event : eventsForPerson) {
+			events.add(convertToDto(event));
+		}
+		return events;
+	}
+	
+	private List<EventDto> createPromotedEventDtosForPromoter(Promoter p) {
+		List<Event> eventsForPromoter = service.getEventsPromotedByPromoter(p);
+		List<EventDto> events = new ArrayList<>();
+		for (Event event : eventsForPromoter) {
 			events.add(convertToDto(event));
 		}
 		return events;

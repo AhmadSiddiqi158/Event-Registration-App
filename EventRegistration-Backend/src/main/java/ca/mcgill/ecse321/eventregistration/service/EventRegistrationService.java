@@ -411,7 +411,7 @@ public class EventRegistrationService {
 		}
 		
 		if(promoter.getPromotes()==null) {
-			Set<Event> promotes = new HashSet<Event>();
+			List<Event> promotes = new ArrayList<Event>();
 			promotes.add(event);
 			promoter.setPromoters(promotes);
 			promoterRepository.save(promoter);
@@ -424,8 +424,18 @@ public class EventRegistrationService {
 		eventRepository.save(event);
 		return promoter;
 		
-		
-		
+	}
+	
+	@Transactional
+	public List<Event> getEventsPromotedByPromoter(Promoter promoter) {
+		if (promoter == null) {
+			throw new IllegalArgumentException("Promoter cannot be null!");
+		}
+		List<Event> eventsPromotedByPromoter = new ArrayList<>();
+		for (Registration r : registrationRepository.findByPerson(promoter)) {
+			eventsPromotedByPromoter.add(r.getEvent());
+		}
+		return eventsPromotedByPromoter;
 	}
 	
 	

@@ -30,15 +30,15 @@ public class Promoter extends Person{
 	@OneToMany(cascade = { CascadeType.ALL })
 	@ElementCollection(targetClass=Event.class)
 	@Column
-	Set<Event> promotes;
+	List<Event> promotes;
 	
 	@Transient
-	public void setPromoters(Set<Event> promotes) {
+	public void setPromoters(List<Event> promotes) {
 		this.promotes = promotes;
 	}
 	
 	@Transient
-	public Set<Event> getPromotes() {
+	public List<Event> getPromotes() {
 		
 		return promotes;
 	}

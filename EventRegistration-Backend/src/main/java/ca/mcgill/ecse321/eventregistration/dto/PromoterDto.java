@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.eventregistration.dto;
 
+import java.util.List;
 import java.util.Set;
 
 public class PromoterDto {
@@ -7,7 +8,7 @@ public class PromoterDto {
 	private CreditCardDto creditcard;
 	private String name;
 	//private RegistrationManagerDto registrationManager;
-	private Set<EventDto> promotes;
+	private List<EventDto> promotes;
 	
 	public PromoterDto() {	
 	}
@@ -32,11 +33,11 @@ public class PromoterDto {
 		this.name = name;
 	}
 
-	public Set<EventDto> getPromotes() {
+	public List<EventDto> getPromotes() {
 		return promotes;
 	}
 
-	public void setPromotes(Set<EventDto> promotes) {
+	public void setPromotes(List<EventDto> promotes) {
 		this.promotes = promotes;
 	}
 	
