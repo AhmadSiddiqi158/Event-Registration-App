@@ -17,9 +17,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 public class CreditCard {
 
-	public CreditCard(String aCardID, int aAmount, Person aPerson)
+	public CreditCard(String accountNumber, int aAmount, Person aPerson)
 	{
-		this.accountNumber = aCardID;
+		this.accountNumber = accountNumber;
 		this.amount = aAmount;
 		if (aPerson == null || aPerson.getCreditCard() != null)
 		{
@@ -29,16 +29,17 @@ public class CreditCard {
 		this.registrations = new ArrayList<Registration>();
 	}
 
-	public CreditCard(String aCardID, int aAmount, String aNameForPerson, RegistrationManager aRegistrationManagerForPerson)
+	public CreditCard(String accountNumber, int aAmount, String aNameForPerson, RegistrationManager aRegistrationManagerForPerson)
 	{
-		accountNumber = aCardID;
+		accountNumber = accountNumber;
 		amount = aAmount;
 		person = new Person(aNameForPerson, aRegistrationManagerForPerson, this);
 		registrations = new ArrayList<Registration>();
+		
 	}
 	
-	public CreditCard (String cardID, double amount) {
-		this.accountNumber=cardID;
+	public CreditCard (String accountNumber, double amount) {
+		this.accountNumber=accountNumber;
 		this.amount= (int) amount;
 	}
 	

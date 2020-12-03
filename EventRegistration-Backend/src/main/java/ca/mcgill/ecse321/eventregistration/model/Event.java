@@ -16,6 +16,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
 //@Table(name="event")
@@ -62,6 +63,16 @@ public class Event {
     public RegistrationManager getRegistrationManager() {
     	return registrationManager;
     }
+    
+//    private Promoter promoter;
+//    
+//    public Promoter getPromoter() {
+//    	return promoter;
+//    }
+//    
+//    public void setPromoter(Promoter promoter) {
+//    	this.promoter = promoter;
+//    }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     private String name;
 

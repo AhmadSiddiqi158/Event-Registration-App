@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.eventregistration.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +28,8 @@ public class EventRegistrationService {
 	private TheatreRepository theatreRepository;
 	@Autowired
 	private CreditCardRepository creditCardRepository;
+	@Autowired
+	private PromoterRepository promoterRepository;
 
 	@Transactional
 	public Person createPerson(String name) {
@@ -101,7 +104,7 @@ public class EventRegistrationService {
 		if (name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("Event name cannot be empty!");
 		}
-		Event event = eventRepository.findByName(name);
+		Event event = eventRepository.findByname(name);
 		return event;
 	}
 
@@ -190,7 +193,7 @@ public class EventRegistrationService {
 		return resultList;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////Theatre methods/////////////////////////////////////////////
 	@Transactional
 	public Theatre buildTheatre(Theatre theatre, String name, Date date, Time startTime, Time endTime, String title) {
 		// Input validation
@@ -242,7 +245,7 @@ public class EventRegistrationService {
 		return toList(theatreRepository.findAll());
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////CreditCards methods/////////////////////////////////////////////////////////////////////////
 
 	/////////////////
 	//Helper method//
@@ -306,7 +309,7 @@ public class EventRegistrationService {
 		if (creditCard == null || registration == null) {
 			error = error + "Registration and payment cannot be null!";
 		} 
-		
+
 		if (creditCard != null && creditCard.getAmount() < 0 ) {
 			error = error + "Payment amount cannot be negative!";
 		}
@@ -317,8 +320,117 @@ public class EventRegistrationService {
 		}
 		registration.setCreditCard(creditCard);
 		registrationRepository.save(registration);
+
+	}
+
+	////////////////////////////////////////////////////////////////////Promoters methods/////////////////////////////////////////////////////////////////////////
+
+	@Transactional
+	public Promoter createPromoter(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Promoter name cannot be empty!");
+		} 
+		else if (promoterRepository.existsById(name)) {
+			throw new IllegalArgumentException("Promoter has already been created!");
+		}
+		Promoter promoter = new Promoter();
+		promoter.setName(name);
+		promoterRepository.save(promoter);
+		return promoter;
+	}
+	
+	@Transactional
+	public List<Promoter> getAllPromoters() {
+		return toList(promoterRepository.findAll());
+	}
+
+	@Transactional
+	public Promoter getPromoter(String name) {
+
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Person name cannot be empty!");
+		}
+		Promoter promoter = promoterRepository.findPromoterByname(name);
+		return promoter;
+	}
+	
+//	@Transactional
+//	public Registration registerPromoter(Promoter promoter, Event event) {
+//		String error = "";
+//		if (promoter == null) {
+//			error = error + "Promoter needs to be selected for promotes! ";
+//		} else if (!promoterRepository.existsById(promoter.getName())) {
+//			error = error + "Promoter does not exist! ";
+//		}
+//		if (event == null) {
+//			error = error + "Event does not exist!";
+//		} else if (!eventRepository.existsById(event.getName())) {
+//			error = error + "Event does not exist!";
+//		}
+//		if (registrationRepository.existsByPersonAndEvent(promoter, event)) {
+//			error = error + "Promoter is already registered to this event!";
+//		}
+//
+//		error = error.trim();
+//
+//		if (error.length() > 0) {
+//			throw new IllegalArgumentException(error);
+//		}
+//
+//		Registration registration = new Registration();
+//		registration.setId(promoter.getName().hashCode() * event.getName().hashCode());
+//		registration.setPerson(promoter);
+//		registration.setEvent(event);
+//
+//		registrationRepository.save(registration);
+//
+//		return registration;
+//	}
+
+	@Transactional
+	public Promoter promotesEvent(Promoter promoter, Event event) {
+		String error = "";
+		if (promoter == null) {
+			error = error + "Promoter needs to be selected for promotes! ";
+		} else if (!promoterRepository.existsById(promoter.getName())) {
+			error = error + "Promoter does not exist! ";
+		}
+		if (event == null) {
+			error = error + "Event does not exist!";
+		} else if (!eventRepository.existsById(event.getName())) {
+			error = error + "Event does not exist!";
+		}
+		if (registrationRepository.existsByPersonAndEvent(promoter, event)) {
+			error = error + "Promoter is already registered to this event!";
+		}
+
+		error = error.trim();
+
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		if(promoter.getPromotes()==null) {
+			Set<Event> promotes = new HashSet<Event>();
+			promotes.add(event);
+			promoter.setPromoters(promotes);
+			promoterRepository.save(promoter);
+			eventRepository.save(event);
+			return promoter;
+		}
+		
+		promoter.getPromotes().add(event);
+		promoterRepository.save(promoter);
+		eventRepository.save(event);
+		return promoter;
+		
+		
 		
 	}
+	
+	
+	
+	
 
 
 }

@@ -30,6 +30,10 @@ public class Person{
 		this.name = null;
 		this.creditCard = null;
 	}
+	
+	public Person(String name) {
+		this.name = name;
+	}
 
 	//manually added
 	private CreditCard creditCard;
