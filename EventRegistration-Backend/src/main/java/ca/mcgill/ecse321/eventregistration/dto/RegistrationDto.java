@@ -1,9 +1,20 @@
 package ca.mcgill.ecse321.eventregistration.dto;
 
+import ca.mcgill.ecse321.eventregistration.model.CreditCard;
+
 public class RegistrationDto {
 
 	private PersonDto person;
 	private EventDto event;
+	private CreditCardDto creditCard;
+
+	public CreditCardDto getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(CreditCardDto creditCard) {
+		this.creditCard = creditCard;
+	}
 
 	public RegistrationDto() {
 	}

@@ -239,11 +239,32 @@ public class EventRegistrationService {
 		eventRepository.save(theatre);
 		return theatre;
 	}
+	
+	@Transactional
+	public Theatre getTheatre(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Theatre name cannot be empty!");
+		}
+		Theatre theatre = theatreRepository.findTheatreByname(name);
+		return theatre;
+	}
 
 	@Transactional
 	public List<Theatre> getAllTheatres() {
 		return toList(theatreRepository.findAll());
 	}
+	
+//	@Transactional
+//	public List<Theatre> getTheatresAttendedByPerson(Person person) {
+//		if (person == null) {
+//			throw new IllegalArgumentException("Person cannot be null!");
+//		}
+//		List<Theatre> theatresAttendedByPerson = new ArrayList<>();
+//		for (Registration r : registrationRepository.findByPerson(person)) {
+//			theatresAttendedByPerson.add(r.getEvent());
+//		}
+//		return theatresAttendedByPerson;
+//	}
 
 	////////////////////////////////////////////////////////////////////CreditCards methods/////////////////////////////////////////////////////////////////////////
 
@@ -301,9 +322,14 @@ public class EventRegistrationService {
 		creditCardRepository.save(creditCard);
 		return creditCard;	
 	}
+	
+	@Transactional
+	public CreditCard getCreditCard(String accountNumber) {
+		return creditCardRepository.findCreditCardByaccountNumber(accountNumber);
+	}
 
 	@Transactional
-	public void pay(Registration registration, CreditCard creditCard) {
+	public Registration pay(Registration registration, CreditCard creditCard) {
 		// Input validation
 		String error = "";
 		if (creditCard == null || registration == null) {
@@ -318,9 +344,14 @@ public class EventRegistrationService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		registration.getPerson().setCreditCard(creditCard);
 		registration.setCreditCard(creditCard);
+		
+		creditCardRepository.save(creditCard);
+		personRepository.save(registration.getPerson());
 		registrationRepository.save(registration);
-
+		
+		return registration;
 	}
 
 	////////////////////////////////////////////////////////////////////Promoters methods/////////////////////////////////////////////////////////////////////////
@@ -354,38 +385,7 @@ public class EventRegistrationService {
 		return promoter;
 	}
 	
-//	@Transactional
-//	public Registration registerPromoter(Promoter promoter, Event event) {
-//		String error = "";
-//		if (promoter == null) {
-//			error = error + "Promoter needs to be selected for promotes! ";
-//		} else if (!promoterRepository.existsById(promoter.getName())) {
-//			error = error + "Promoter does not exist! ";
-//		}
-//		if (event == null) {
-//			error = error + "Event does not exist!";
-//		} else if (!eventRepository.existsById(event.getName())) {
-//			error = error + "Event does not exist!";
-//		}
-//		if (registrationRepository.existsByPersonAndEvent(promoter, event)) {
-//			error = error + "Promoter is already registered to this event!";
-//		}
-//
-//		error = error.trim();
-//
-//		if (error.length() > 0) {
-//			throw new IllegalArgumentException(error);
-//		}
-//
-//		Registration registration = new Registration();
-//		registration.setId(promoter.getName().hashCode() * event.getName().hashCode());
-//		registration.setPerson(promoter);
-//		registration.setEvent(event);
-//
-//		registrationRepository.save(registration);
-//
-//		return registration;
-//	}
+
 
 	@Transactional
 	public Promoter promotesEvent(Promoter promoter, Event event) {
@@ -410,20 +410,21 @@ public class EventRegistrationService {
 			throw new IllegalArgumentException(error);
 		}
 		
+		List<Event> promotes = new ArrayList<Event>();
 		if(promoter.getPromotes()==null) {
-			List<Event> promotes = new ArrayList<Event>();
 			promotes.add(event);
-			promoter.setPromoters(promotes);
+			promoter.setPromotes(promotes);
+			personRepository.save(promoter);
 			promoterRepository.save(promoter);
 			eventRepository.save(event);
 			return promoter;
 		}
 		
 		promoter.getPromotes().add(event);
+		personRepository.save(promoter);
 		promoterRepository.save(promoter);
 		eventRepository.save(event);
-		return promoter;
-		
+		return promoter;	
 	}
 	
 	@Transactional

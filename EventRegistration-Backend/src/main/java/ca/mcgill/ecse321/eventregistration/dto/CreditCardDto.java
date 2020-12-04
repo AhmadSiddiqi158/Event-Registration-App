@@ -24,18 +24,19 @@ public class CreditCardDto {
 		this.registrations = new ArrayList<RegistrationDto>();
 	}
 
-//	public CreditCardDto(String accountNumber, int aAmount, String aNameForPerson, RegistrationManager aRegistrationManagerForPerson)
-//	{
-//		this.accountNumber = accountNumber;
-//		this.amount = aAmount;
-//		this.person = new Person(aNameForPerson, aRegistrationManagerForPerson, this);
-//		this.registrations = new ArrayList<Registration>();
-//		
-//	}
+	public CreditCardDto(String accountNumber, int aAmount, String person, List<RegistrationDto> registrations)
+	{
+		this.accountNumber = accountNumber;
+		this.amount = aAmount;
+		this.person = new PersonDto(person);
+		this.registrations = registrations;
+		
+	}
 	
 	public CreditCardDto(String accountNumber, double amount) {
 		this.accountNumber=accountNumber;
 		this.amount= (int) amount;
+		this.registrations = new ArrayList<RegistrationDto>();
 	}
 	
 	public CreditCardDto() {
