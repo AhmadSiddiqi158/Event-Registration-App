@@ -10,7 +10,7 @@ public class CreditCardDto {
 	private String accountNumber;
 	private int amount;
 	private PersonDto person;
-	private List<RegistrationDto> registrations;
+	//private List<RegistrationDto> registrations;
 	
 	public CreditCardDto(String accountNumber, int aAmount, PersonDto aPerson)
 	{
@@ -21,7 +21,7 @@ public class CreditCardDto {
 			throw new RuntimeException("Unable to create CreditCard due to aPerson.");
 		}
 		this.person = aPerson;
-		this.registrations = new ArrayList<RegistrationDto>();
+		//this.registrations = new ArrayList<RegistrationDto>();
 	}
 
 	public CreditCardDto(String accountNumber, int aAmount, String person, List<RegistrationDto> registrations)
@@ -29,21 +29,21 @@ public class CreditCardDto {
 		this.accountNumber = accountNumber;
 		this.amount = aAmount;
 		this.person = new PersonDto(person);
-		this.registrations = registrations;
+		//this.registrations = registrations;
 		
 	}
 	
 	public CreditCardDto(String accountNumber, double amount) {
 		this.accountNumber=accountNumber;
 		this.amount= (int) amount;
-		this.registrations = new ArrayList<RegistrationDto>();
+		//this.registrations = new ArrayList<RegistrationDto>();
 	}
 	
 	public CreditCardDto() {
 		this.accountNumber = null;
 		this.amount = 0;
 		this.person = null;
-		this.registrations = null;
+		//this.registrations = null;
 		
 	}
 	
@@ -71,12 +71,12 @@ public class CreditCardDto {
 		this.person = person;
 	}
 
-	public List<RegistrationDto> getRegistrations() {
-		return registrations;
-	}
-
-	public void setRegistrations(List<RegistrationDto> registrations) {
-		this.registrations = registrations;
-	}
+//	public List<RegistrationDto> getRegistrations() {
+//		return registrations;
+//	}
+//
+//	public void setRegistrations(List<RegistrationDto> registrations) {
+//		this.registrations = registrations;
+//	}
 	
 }

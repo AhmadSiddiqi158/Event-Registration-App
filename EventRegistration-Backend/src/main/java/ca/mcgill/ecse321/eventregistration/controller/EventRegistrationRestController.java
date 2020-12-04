@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.eventregistration.model.*;
-import ca.mcgill.ecse321.eventregistration.dao.PromoterRepository;
 import ca.mcgill.ecse321.eventregistration.dto.*;
 import ca.mcgill.ecse321.eventregistration.service.EventRegistrationService;
 
@@ -237,7 +236,7 @@ public class EventRegistrationRestController {
 		
 		if(r.getCreditCard() != null) {
 			CreditCardDto cDTO  = convertToDto(r.getCreditCard());
-			rDto.setCreditCard(cDTO);;
+			rDto.setCreditCard(cDTO);
 			
 		}
 		return rDto;
@@ -302,14 +301,14 @@ public class EventRegistrationRestController {
 //			creditCardDto.setPerson(pDTO);
 //		}
 
-		if(c.getRegistrations() != null && !c.getRegistrations().isEmpty()) {
-			List<RegistrationDto> rDTO = new ArrayList<RegistrationDto>();
-			for(Registration r : c.getRegistrations()) {
-				rDTO.add(convertToDto(r));
-			}
-			creditCardDto.setRegistrations(rDTO);
-
-		}
+//		if(c.getRegistrations() != null && !c.getRegistrations().isEmpty()) {
+//			List<RegistrationDto> rDTO = new ArrayList<RegistrationDto>();
+//			for(Registration r : c.getRegistrations()) {
+//				rDTO.add(convertToDto(r));
+//			}
+//			creditCardDto.setRegistrations(rDTO);
+//
+//		}
 		return creditCardDto;
 	}
 

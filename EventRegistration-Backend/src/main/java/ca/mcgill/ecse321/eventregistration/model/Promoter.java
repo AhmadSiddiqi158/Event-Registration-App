@@ -27,17 +27,17 @@ public class Promoter extends Person{
 		super (name);		
 	}
 	
-	@OneToMany(cascade = { CascadeType.ALL })
-	@ElementCollection(targetClass=Event.class)
-	@Column
 	List<Event> promotes;
 	
-	@Transient
+	
 	public void setPromotes(List<Event> promotes) {
 		this.promotes = promotes;
 	}
 	
-	@Transient
+	
+	@OneToMany(cascade = { CascadeType.ALL })
+	@ElementCollection(targetClass=Event.class)
+	@Column
 	public List<Event> getPromotes() {
 		
 		return promotes;

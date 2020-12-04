@@ -5,82 +5,296 @@
       <tr>
         <th>Name</th>
         <th>Events</th>
+        <!-- ////////////////////////////////////////////////// -->
+        <th style="color: red">Payment ID</th>
+        <th style="color: red">AMOUNT ($)</th>
+        <!-- ////////////////////////////////////////////////// -->
       </tr>
       <tr v-for="(person, i) in persons" v-bind:key="`person-${i}`">
-        <td>{{person.name}}</td>
+        <td>{{ person.name }}</td>
         <td>
           <ul>
-            <li v-for="(event, i) in person.eventsAttended" v-bind:key="`event-${i}`" style="list-style-type: disc;">
-              <span class='registration-event-name'>{{event.name}}</span>
+            <li
+              v-for="(event, i) in person.eventsAttended"
+              v-bind:key="`event-${i}`"
+              style="list-style-type: disc"
+            >
+              <span class="registration-event-name">{{ event.name }}</span>
             </li>
           </ul>
         </td>
+        <!-- ////////////////////////////////////////////////// -->
+        
+        <td style="color: red">1234-EDSE</td>
+        <td style="color: red">100</td>
+        <!-- ////////////////////////////////////////////////// -->
       </tr>
       <tr>
         <td>
-          <input id="create_person_person_name" type="text" v-model="newPerson" placeholder="Person Name">
+          <input
+            id="create_person_person_name"
+            type="text"
+            v-model="newPerson"
+            placeholder="Person Name"
+          />
         </td>
+        <!-- ////////////////////////////////////////////////// -->
         <td>
-          <button id="create_person_button" v-bind:disabled="!newPerson" @click="createPerson(personType, newPerson)">Create Person</button>
+          <select id="registration-person-select" v-model="selectedPerson">
+            <option style="color: red" disabled value="">Person</option>
+            <option v-for="(person, i) in persons" v-bind:key="`person-${i}`">
+              {{ person.name }}
+            </option>
+          </select>
+        </td>
+        <!-- ////////////////////////////////////////////////// -->
+        <td>
+          <button
+            id="create_person_button"
+            v-bind:disabled="!newPerson"
+            @click="createPerson(personType, newPerson)"
+          >
+            Create Person
+          </button>
         </td>
         <td></td>
         <td></td>
       </tr>
     </table>
-    <span v-if="errorPerson" style="color:red">Error: {{errorPerson}}</span>
+    <span v-if="errorPerson" style="color: red">Error: {{ errorPerson }}</span>
 
     <hr>
     <h2>Events</h2>
-    <table id='events-table'>
+    <table id="events-table">
       <tr>
         <th>Name</th>
         <th>Date</th>
         <th>Start</th>
         <th>End</th>
+        <!-- ////////////////////////////////////////////////// -->
+        <th style="color:red">Title</th>
+        <!-- ////////////////////////////////////////////////// -->
       </tr>
-      <tr v-for="(event, i) in events" v-bind:id="event.name" v-bind:key="`event-${i}`">
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-name`">{{event.name}}</td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-date`">{{event.date}}</td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-starttime`">{{event.startTime}}</td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-endtime`">{{event.endTime}}</td>
+      <tr
+        v-for="(event, i) in events"
+        v-bind:id="event.name"
+        v-bind:key="`event-${i}`"
+      >
+        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-name`">
+          {{ event.name }}
+        </td>
+        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-date`">
+          {{ event.date }}
+        </td>
+        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-starttime`">
+          {{ event.startTime }}
+        </td>
+        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-endtime`">
+          {{ event.endTime }}
+        </td>
+        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-title`">
+          {{ event.title }}
+        </td>
       </tr>
+
+      <tr
+        v-for="(theatre, i) in theatres"
+        v-bind:id="theatre.name"
+        v-bind:key="`theatre-${i}`"
+      >
+        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-name`">
+          {{ theatre.name }}
+        </td>
+        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-date`">
+          {{ theatre.date }}
+        </td>
+        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-starttime`">
+          {{ theatre.startTime }}
+        </td>
+        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-endtime`">
+          {{ theatre.endTime }}
+        </td>
+        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-title`">
+          {{ theatre.title }}
+        </td>
+      </tr>
+      
       <tr>
         <td>
-          <input id="event-name-input" type="text" v-model="newEvent.name" placeholder="Event Name">
+          <input
+            id="event-name-input"
+            type="text"
+            v-model="newEvent.name"
+            placeholder="Event Name"
+          />
         </td>
         <td>
-          <input id="event-date-input" type="date" v-model="newEvent.date" placeholder="YYYY-MM-DD">
+          <input
+            id="event-date-input"
+            type="date"
+            v-model="newEvent.date"
+            placeholder="YYYY-MM-DD"
+          />
         </td>
         <td>
-          <input id="event-starttime-input" type="time" v-model="newEvent.startTime" placeholder="HH:mm">
+          <input
+            id="event-starttime-input"
+            type="time"
+            v-model="newEvent.startTime"
+            placeholder="HH:mm"
+          />
         </td>
         <td>
-          <input id="event-endtime-input" type="time" v-model="newEvent.endTime" placeholder="HH:mm">
+          <input
+            id="event-endtime-input"
+            type="time"
+            v-model="newEvent.endTime"
+            placeholder="HH:mm"
+          />
         </td>
+        <!-- ///////////////////////////////////////////////////////// -->
         <td>
-          <button id="event-create-button" v-bind:disabled="!newEvent.name" v-on:click="createEvent(newEvent)">Create</button>
+          <input
+            id="event-title-input"
+            type="text"
+            v-model="newTheatre.title"
+            placeholder="Theatre title"
+          />
+        </td>
+        <!-- ///////////////////////////////////////////////////////// -->
+
+        <td>
+          <button
+            id="event-create-button"
+            v-bind:disabled="!newEvent.name"
+            v-on:click="createEvent(newEvent); createTheatre(newTheatre)"
+          >
+            Create
+          </button>
         </td>
       </tr>
     </table>
-    <span id="event-error" v-if="errorEvent" style="color:red">Error: {{errorEvent}}</span>
-    <hr>
+    <span id="event-error" v-if="errorEvent" style="color: red"
+      >Error: {{ errorEvent }}</span
+    >
+    <hr />
     <h2>Registrations</h2>
-    <label>Person:
-      <select id='registration-person-select' v-model="selectedPerson">
+    <label
+      >Person:
+      <select id="registration-person-select" v-model="selectedPerson">
         <option disabled value="">Please select one</option>
-        <option v-for="(person, i) in persons" v-bind:key="`person-${i}`">{{person.name}}</option>
+        <option v-for="(person, i) in persons" v-bind:key="`person-${i}`">
+          {{ person.name }}
+        </option>
       </select>
     </label>
-    <label>Event:
-      <select id='registration-event-select' v-model="selectedEvent">
+    <label
+      >Event:
+      <select id="registration-event-select" v-model="selectedEvent">
         <option disabled value="">Please select one</option>
-        <option v-for="(event, i) in events" v-bind:key="`event-${i}`">{{event.name}}</option>
+        <option v-for="(event, i) in events" v-bind:key="`event-${i}`">
+          {{ event.name }}
+        </option>
       </select>
     </label>
-    <button id='registration-button' v-bind:disabled="!selectedPerson || !selectedEvent" @click="registerEvent(selectedPerson, selectedEvent)">Register</button>
-    <br/>
-    <span v-if="errorRegistration" style="color:red">Error: {{errorRegistration}}</span>
+    <button
+      id="registration-button"
+      v-bind:disabled="!selectedPerson || !selectedEvent"
+      @click="registerEvent(selectedPerson, selectedEvent)"
+    >
+      Register
+    </button>
+    <br />
+    <span v-if="errorRegistration" style="color: red"
+      >Error: {{ errorRegistration }}</span
+    >
+    <hr />
+    <!-- ////////////////////////////ASSIGN PROMOTERS///////////////////////////// -->
+    <h2>Assign Promoters</h2>
+    <label
+      >Promoter:
+      <select id="registration-promoter-select" v-model="selectedPromoter">
+        <option disabled value="">Please select one</option>
+        <option v-for="(promoter, i) in promoters" v-bind:key="`promoter-${i}`">
+          {{ promoter.name }}
+        </option>
+      </select>
+    </label>
+    <label
+      >Event:
+      <select id="registration-event-select" v-model="selectedEvent">
+        <option disabled value="">Please select one</option>
+        <option v-for="(event, i) in events" v-bind:key="`event-${i}`">
+          {{ event.name }}
+        </option>
+      </select>
+    </label>
+    <button
+      id="assign-button"
+      v-bind:disabled="!selectedPromoter || !selectedEvent"
+      @click="assignEvent(selectedPromoter, selectedEvent)"
+    >
+      Assign
+    </button>
+    <br />
+    <span v-if="errorAssign" style="color: red"
+      >Error: {{ errorAssign }}</span
+    >
+    <!-- ///////////////////////PAYMENT FOR REGISTRATION/////////////////////// -->
     <hr>
+    <h2>Pay for Registration with CreditCard</h2>
+    <label
+      >Person:
+      <select id="credit-card-person-select" v-model="selectedPerson">
+        <option disabled value="">Please select one</option>
+        <option v-for="(person, i) in persons" v-bind:key="`person-${i}`">
+          {{ person.name }}
+        </option>
+      </select>
+    </label>
+    <label
+      >Event:
+      <select id="credit-card-event-select" v-model="selectedEvent">
+        <option disabled value="">Please select one</option>
+        <option v-for="(event, i) in events" v-bind:key="`event-${i}`">
+          {{ event.name }}
+        </option>
+      </select>
+    </label>
+    <br>
+    <label
+      >CreditCard iD:
+      <input
+            id="credit-card-id-input"
+            type="text"
+            v-model="selectedCreditCard"
+            placeholder="Account number"
+          />
+    </label>
+    <label
+      >Amount:
+      <input
+            id="credit-card-amount-input"
+            type="number"
+            v-model="selectedAmount"
+            placeholder="Account number"
+          />
+    </label>
+    <br>
+    <button
+      id="credit-card-button"
+      v-bind:disabled="!selectedPerson || !selectedEvent || !selectedCreditCard || !selectedAmount"
+      @click="pay(selectedPerson, selectedEvent)"
+    >
+      Make payment
+    </button>
+    <br />
+    <span v-if="credit-card-error" style="color: red"
+      >Error: {{ credit-card-error }}</span
+    >
+    <hr />
+
+    <!-- ///////////////////////////////////////////////////////// -->
   </div>
 </template>
 
@@ -88,7 +302,7 @@
 
 <style>
 #eventregistration {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -103,7 +317,8 @@
 .registration-event-name {
   display: inline-block;
 }
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {

@@ -25,6 +25,7 @@ export default {
     return {
       persons: [],
       events: [],
+      theatres: [],
       newPerson: '',
       personType: 'Person',
       newEvent: {
@@ -32,6 +33,13 @@ export default {
         date: '2017-12-08',
         startTime: '09:00',
         endTime: '11:00'
+      },
+      newTheatre: {
+        name: '',
+        date: '2017-12-08',
+        startTime: '09:00',
+        endTime: '11:00',
+        title: ''
       },
       selectedPerson: '',
       selectedEvent: '',
@@ -51,6 +59,7 @@ export default {
     .catch(e => {this.errorPerson = e});
 
     AXIOS.get('/events').then(response => {this.events = response.data}).catch(e => {this.errorEvent = e});
+    AXIOS.get('/theatres').then(response => {this.theatres = response.data}).catch(e => {this.errorEvent = e});
 
   },
 
@@ -86,6 +95,22 @@ export default {
       });
     },
 
+    createTheatre: function (newTheatre) {
+      let url = '';
+
+      AXIOS.post('/theatres/'.concat(newTheatre.name), {}, {params: newTheatre})
+      .then(response => {
+        this.theatres.push(response.data);
+        this.errorEvent = '';
+        this.newTheare.name = this.newTheatre.make = this.newTheatre.movie = this.newTheatre.company = this.newTheatre.artist = this.newTheatre.title = '';
+      })
+      .catch(e => {
+        e = e.response.data.message ? e.response.data.message : e;
+        this.errorEvent = e;
+        console.log(e);
+      });
+    },
+
     registerEvent: function (personName, eventName) {
       let event = this.events.find(x => x.name === eventName);
       let person = this.persons.find(x => x.name === personName);
@@ -106,6 +131,7 @@ export default {
         this.errorRegistration = e;
         console.log(e);
       });
+      this.persons.forEach(person => this.getRegistrations(person.name))
     },
 
     getRegistrations: function (personName) {
