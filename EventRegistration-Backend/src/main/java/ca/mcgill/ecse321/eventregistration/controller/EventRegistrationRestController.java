@@ -80,6 +80,7 @@ public class EventRegistrationRestController {
 	public PromoterDto promoteEvent(@PathVariable("name") String name, @PathVariable("eventName") String eventName ) {
 		Promoter promoter = service.getPromoter(name);
 		Event event = service.getEvent(eventName);
+		
 		return (convertToDto(service.promotesEvent(promoter, event)));
 	}
 
