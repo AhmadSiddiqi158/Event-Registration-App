@@ -218,6 +218,10 @@ public class EventRegistrationRestController {
 			throw new IllegalArgumentException("There is no such Event!");
 		}
 		EventDto eventDto = new EventDto(e.getName(), e.getDate(), e.getStartTime(), e.getEndTime());
+		
+		if(e.getTitle() != null) {
+			eventDto.setTitle(e.getTitle());
+		}
 		return eventDto;
 	}
 

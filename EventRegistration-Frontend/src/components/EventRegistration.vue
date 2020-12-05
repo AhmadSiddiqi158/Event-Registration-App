@@ -79,42 +79,20 @@
         v-bind:id="event.name"
         v-bind:key="`event-${i}`"
       >
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-name`">
+        <td v-bind:id="`${event.name.replace(/\s/g, '-')}-name`">
           {{ event.name }}
         </td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-date`">
+        <td v-bind:id="`${event.name.replace(/\s/g, '-')}-date`">
           {{ event.date }}
         </td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-starttime`">
+        <td v-bind:id="`${event.name.replace(/\s/g, '-')}-starttime`">
           {{ event.startTime }}
         </td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-endtime`">
+        <td v-bind:id="`${event.name.replace(/\s/g, '-')}-endtime`">
           {{ event.endTime }}
         </td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '_')}-title`">
+        <td v-bind:id="`${event.name.replace(/\s/g, '-')}-title`">
           {{ event.title }}
-        </td>
-      </tr>
-
-      <tr
-        v-for="(theatre, i) in theatres"
-        v-bind:id="theatre.name"
-        v-bind:key="`theatre-${i}`"
-      >
-        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-name`">
-          {{ theatre.name }}
-        </td>
-        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-date`">
-          {{ theatre.date }}
-        </td>
-        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-starttime`">
-          {{ theatre.startTime }}
-        </td>
-        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-endtime`">
-          {{ theatre.endTime }}
-        </td>
-        <td v-bind:id="`${theatre.name.replace(/\s/g, '_')}-title`">
-          {{ theatre.title }}
         </td>
       </tr>
 
@@ -156,7 +134,7 @@
           <input
             id="event-title-input"
             type="text"
-            v-model="newTheatre.title"
+            v-model="newEvent.title"
             placeholder="Theatre title"
           />
         </td>
@@ -167,7 +145,7 @@
             id="event-create-button"
             v-bind:disabled="!newEvent.name"
             v-on:click="
-              createEvent(newEvent,newTheatre);
+              createEvent(newEvent);
             "
           >
             Create

@@ -9,6 +9,14 @@ public class EventDto {
 	private Date date;
 	private Time startTime;
 	private Time endTime;
+	private String title;
+
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title= title;
+	}
 
 	public EventDto() {
 	}

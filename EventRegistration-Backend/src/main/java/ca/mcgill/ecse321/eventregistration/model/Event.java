@@ -37,8 +37,20 @@ public class Event {
     	this.date = aDate;
     	this.startTime = aStartTime;
     	this.endTime = aEndTime;
+    
     	
 	}
+    public Event(String aName, Date aDate, Time aStartTime, Time aEndTime, String title) {
+		// TODO Auto-generated constructor stub
+    	this.name = aName;
+    	this.date = aDate;
+    	this.startTime = aStartTime;
+    	this.endTime = aEndTime;
+    	this.title = title;
+    
+    	
+	}
+    
     
     public Event() {
 		// TODO Auto-generated constructor stub
@@ -47,6 +59,7 @@ public class Event {
     	this.startTime = null;
     	this.endTime = null;
     	this.registrationManager = null;
+    	
     	
 	}
     
@@ -61,6 +74,15 @@ public class Event {
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    private String title;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getTitle() {
+        return this.title;
+    }
+    
     private String name;
 
     public void setName(String value) {

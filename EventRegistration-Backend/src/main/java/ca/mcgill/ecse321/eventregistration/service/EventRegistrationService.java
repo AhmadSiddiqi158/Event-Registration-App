@@ -98,6 +98,7 @@ public class EventRegistrationService {
 		eventRepository.save(event);
 		return event;
 	}
+	
 
 	@Transactional
 	public Event getEvent(String name) {
@@ -111,7 +112,7 @@ public class EventRegistrationService {
 	// This returns all objects of instance "Event" (Subclasses are filtered out)
 	@Transactional
 	public List<Event> getAllEvents() {
-		return toList(eventRepository.findAll()).stream().filter(e -> e.getClass().equals(Event.class)).collect(Collectors.toList());
+		return toList(eventRepository.findAll());
 	}
 
 	@Transactional

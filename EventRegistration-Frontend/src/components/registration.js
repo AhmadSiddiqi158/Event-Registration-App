@@ -26,23 +26,17 @@ export default {
       persons: [],
       promoters: [],
       events: [],
-      theatres: [],
+      //theatres: [],
       newPerson: '',
       personType: ['Person', 'Promoter'],
       newEvent: {
         name: '',
         date: '2017-12-08',
         startTime: '09:00',
-        endTime: '11:00'
-      },
-      newTheatre: {
-        name: '',
-        date: '2017-12-08',
-        startTime: '09:00',
         endTime: '11:00',
-        title: ''
+        title:'--'
       },
-      selectedPersonType: '',
+      selectedPersonType: 'Person',
       selectedPromoter: '',
       selectedPerson: '',
       selectedEvent: '',
@@ -69,7 +63,7 @@ export default {
     .catch(e => {this.errorPerson = e});
 
     AXIOS.get('/events').then(response => {this.events = response.data}).catch(e => {this.errorEvent = e});
-    AXIOS.get('/theatres').then(response => {this.theatres = response.data}).catch(e => {this.errorEvent = e});
+    //AXIOS.get('/theatres').then(response => {this.theatres = response.data}).catch(e => {this.errorEvent = e});
     AXIOS.get('/promoters').then(response => {this.promoters = response.data}).catch(e => {this.errorAssign = e});
 
   },
@@ -135,15 +129,17 @@ export default {
       }
     },
 
-    createEvent: function (newEvent, newTheatre) {
+    createEvent: function (newEvent) {
       let url = '';
-      if(newTheatre.title.length==0){
-
-        AXIOS.post('/events/'.concat(newEvent.name), {}, {params: newEvent})
+       if(newEvent.title.length==0){
+        
+        //'/events/'.concat(newEvent.name)+'?date='.concat(newEvent.date)+'&startTime='.concat(newEvent.startTime)+'&endTime'.concat(newEvent.endTime)
+        AXIOS.post('/events/'.concat(newEvent.name),{}, {params: newEvent})  
         .then(response => {
           this.events.push(response.data);
           this.errorEvent = '';
           this.newEvent.name = this.newEvent.make = this.newEvent.movie = this.newEvent.company = this.newEvent.artist = this.newEvent.title = '';
+          this.newEvent.title='--'
         })
         .catch(e => {
           e = e.response.data.message ? e.response.data.message : e;
@@ -153,36 +149,22 @@ export default {
       }
       else{
 
-        AXIOS.post('/theatres/'.concat(newEvent.name), {}, {params: newTheatre})
+        AXIOS.post('/theatres/'.concat(newEvent.name), {}, {params: newEvent})
         .then(response => {
-          this.theatres.push(response.data);
+          this.events.push(response.data);
           this.errorEvent = '';
-          this.newTheatre.name = this.newTheatre.make = this.newTheatre.movie = this.newTheatre.company = this.newTheatre.artist = this.newTheatre.title = '';
+          this.newEvent.name = this.newEvent.make = this.newEvent.movie = this.newEvent.company = this.newEvent.artist = this.newEvent.title = '';
+          this.newEvent.title='--'
         })
         .catch(e => {
           e = e.response.data.message ? e.response.data.message : e;
-          this.errorEvent = e;
+          this.errorEvent = "Event has already been created!";//e;
           console.log(e);
         });
 
       }
     },
 
-    createTheatre: function (newTheatre) {
-      let url = '';
-
-      AXIOS.post('/theatres/'.concat(newTheatre.name), {}, {params: newTheatre})
-      .then(response => {
-        this.theatres.push(response.data);
-        this.errorEvent = '';
-        this.newTheare.name = this.newTheatre.make = this.newTheatre.movie = this.newTheatre.company = this.newTheatre.artist = this.newTheatre.title = '';
-      })
-      .catch(e => {
-        e = e.response.data.message ? e.response.data.message : e;
-        this.errorEvent = e;
-        console.log(e);
-      });
-    },
 
     registerEvent: function (personName, eventName) {
       let event = this.events.find(x => x.name === eventName);
