@@ -1,0 +1,6 @@
+{
+  "scripts": {
+      "postinstall": "cd EventRegistration-Frontend && npm install",
+      "start": "cd EventRegistration-Frontend && npm run build"
+  }
+}
