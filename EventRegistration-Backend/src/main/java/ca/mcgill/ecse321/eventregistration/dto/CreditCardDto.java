@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.eventregistration.dto;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 

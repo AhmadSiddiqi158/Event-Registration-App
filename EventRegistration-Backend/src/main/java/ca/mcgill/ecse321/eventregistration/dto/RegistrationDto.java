@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.eventregistration.dto;
 
-import ca.mcgill.ecse321.eventregistration.model.CreditCard;
+
 
 public class RegistrationDto {
 

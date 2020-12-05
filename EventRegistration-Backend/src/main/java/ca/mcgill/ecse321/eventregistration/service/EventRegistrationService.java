@@ -3,10 +3,10 @@ package ca.mcgill.ecse321.eventregistration.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -304,6 +304,11 @@ public class EventRegistrationService {
 		if (amount == null) {
 			error = error + "amount cannot be empty! ";
 		}
+
+		if (amount < 0) {
+			error = error + "Payment amount cannot be negative!";
+		}
+		
 
 
 		error = error.trim();

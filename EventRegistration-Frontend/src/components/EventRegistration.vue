@@ -91,9 +91,13 @@
         <td v-bind:id="`${event.name.replace(/\s/g, '-')}-endtime`">
           {{ event.endTime }}
         </td>
-        <td v-bind:id="`${event.name.replace(/\s/g, '-')}-title`">
+        <td v-if= "event.title" v-bind:id="`${event.name.replace(/\s/g, '-')}-title`">
           {{ event.title }}
         </td>
+        <td v-else v-bind:id="`${event.name.replace(/\s/g, '-')}-title`">
+          {{ noTitle }}
+        </td>
+        
       </tr>
 
       <tr>
@@ -110,7 +114,8 @@
             id="event-date-input"
             type="date"
             v-model="newEvent.date"
-            placeholder="YYYY-MM-DD"
+            placeholder="DD/MM/YYYY"
+            max="2999-12-31"
           />
         </td>
         <td>

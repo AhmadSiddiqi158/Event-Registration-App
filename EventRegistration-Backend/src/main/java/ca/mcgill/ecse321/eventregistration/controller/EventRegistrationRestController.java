@@ -346,14 +346,7 @@ public class EventRegistrationRestController {
 	}
 
 
-	private List<EventDto> createPromotedEventDtosForPromoter(Promoter p) {
-		List<Event> eventsForPromoter = service.getEventsPromotedByPromoter(p);
-		List<EventDto> events = new ArrayList<>();
-		for (Event event : eventsForPromoter) {
-			events.add(convertToDto(event));
-		}
-		return events;
-	}
+
 
 	private List<RegistrationDto> createRegistrationDtosForPerson(Person p) {
 		List<Registration> registrationsForPerson = service.getRegistrationsForPerson(p);
