@@ -15,7 +15,7 @@ let backendConfigurer = function () {
 let backendUrl = backendConfigurer();
 
 let AXIOS = axios.create({
-  baseURL: backendUrl
+  baseURL: "https://eventregistration-backend-010.herokuapp.com/"
   // headers: {'Access-Control-Allow-Origin': frontendUrl}
 });
 
@@ -24,10 +24,11 @@ export default {
   data() {
     return {
       persons: [],
+      promoters: [],
       events: [],
       theatres: [],
       newPerson: '',
-      personType: 'Person',
+      personType: ['Person', 'Promoter'],
       newEvent: {
         name: '',
         date: '2017-12-08',
@@ -41,10 +42,19 @@ export default {
         endTime: '11:00',
         title: ''
       },
+      selectedPersonType: '',
+      selectedPromoter: '',
       selectedPerson: '',
       selectedEvent: '',
+      eventSelectedName: '',
+      personNameForPay: '',
+      eventNameForPay: '',
+      selectedCreditCardAccountNumber: '',
+      selectedAmount: '',
       errorPerson: '',
       errorEvent: '',
+      errorAssign: '',
+      errorCreditCardAndPay: '',
       errorRegistration: '',
       response: [],
     }
@@ -60,39 +70,102 @@ export default {
 
     AXIOS.get('/events').then(response => {this.events = response.data}).catch(e => {this.errorEvent = e});
     AXIOS.get('/theatres').then(response => {this.theatres = response.data}).catch(e => {this.errorEvent = e});
+    AXIOS.get('/promoters').then(response => {this.promoters = response.data}).catch(e => {this.errorAssign = e});
 
   },
 
   methods: {
 
-    createPerson: function (personType, personName) {
-      AXIOS.post('/persons/'.concat(personName), {}, {})
+    createCreditCardAndPay: function(accountNumber, amount, personName, eventName){
+      AXIOS.post('/creditCard?accountNumber='.concat(accountNumber)+'&amount='.concat(amount))
       .then(response => {
-        this.persons.push(response.data);
-        this.errorPerson = '';
-        this.newPerson = '';
+        this.selectedCreditCardAccountNumber = response.data;
+        this.selectedCreditCardAccountNumber= '';
+        this.selectedAmount = '';
+        this.errorCreditCardAndPay = '';
+
+        AXIOS.post('/pay/'.concat(personName) +'/'.concat(eventName)+'?accountNumber='.concat(accountNumber))
+        .then(response =>{
+          this.personNameForPay = '';
+          this.eventNameForPay = '';
+        })
+        .catch(e => {
+          e = e.response.data.message ? e.response.data.message : e;
+          this.errorCreditCardAndPay = e;
+          console.log(e);
+        });
       })
       .catch(e => {
         e = e.response.data.message ? e.response.data.message : e;
-        this.errorPerson = e;
+        this.errorCreditCardAndPay = e;
         console.log(e);
       });
+      this.persons.forEach(person => this.getRegistrations(person.creditCard.accountNumber))
+      this.persons.forEach(person => this.getRegistrations(person.creditCard.amount))
     },
 
-    createEvent: function (newEvent) {
-      let url = '';
+    createPerson: function (personType, personName) {
+      if(personType==="Person"){
+        AXIOS.post('/persons/'.concat(personName), {}, {})
+        .then(response => {
+          this.persons.push(response.data);
+          this.errorPerson = '';
+          this.newPerson = '';
+        })
+        .catch(e => {
+          e = e.response.data.message ? e.response.data.message : e;
+          this.errorPerson = e;
+          console.log(e);
+        });
+      }
 
-      AXIOS.post('/events/'.concat(newEvent.name), {}, {params: newEvent})
-      .then(response => {
-        this.events.push(response.data);
-        this.errorEvent = '';
-        this.newEvent.name = this.newEvent.make = this.newEvent.movie = this.newEvent.company = this.newEvent.artist = this.newEvent.title = '';
-      })
-      .catch(e => {
-        e = e.response.data.message ? e.response.data.message : e;
-        this.errorEvent = e;
-        console.log(e);
-      });
+      else if (personType==="Promoter"){
+        AXIOS.post('/promoters/'.concat(personName), {}, {})
+        .then(response => {
+          this.persons.push(response.data);
+          this.promoters.push(response.data);
+          this.errorPerson = '';
+          this.newPerson = '';
+        })
+        .catch(e => {
+          e = e.response.data.message ? e.response.data.message : e;
+          this.errorPerson = e;
+          console.log(e);
+        });
+      }
+    },
+
+    createEvent: function (newEvent, newTheatre) {
+      let url = '';
+      if(newTheatre.title.length==0){
+
+        AXIOS.post('/events/'.concat(newEvent.name), {}, {params: newEvent})
+        .then(response => {
+          this.events.push(response.data);
+          this.errorEvent = '';
+          this.newEvent.name = this.newEvent.make = this.newEvent.movie = this.newEvent.company = this.newEvent.artist = this.newEvent.title = '';
+        })
+        .catch(e => {
+          e = e.response.data.message ? e.response.data.message : e;
+          this.errorEvent = e;
+          console.log(e);
+        });
+      }
+      else{
+
+        AXIOS.post('/theatres/'.concat(newEvent.name), {}, {params: newTheatre})
+        .then(response => {
+          this.theatres.push(response.data);
+          this.errorEvent = '';
+          this.newTheatre.name = this.newTheatre.make = this.newTheatre.movie = this.newTheatre.company = this.newTheatre.artist = this.newTheatre.title = '';
+        })
+        .catch(e => {
+          e = e.response.data.message ? e.response.data.message : e;
+          this.errorEvent = e;
+          console.log(e);
+        });
+
+      }
     },
 
     createTheatre: function (newTheatre) {
@@ -129,6 +202,23 @@ export default {
       .catch(e => {
         e = e.response.data.message ? e.response.data.message : e;
         this.errorRegistration = e;
+        console.log(e);
+      });
+      this.persons.forEach(person => this.getRegistrations(person.name))
+    },
+
+    assignEvent: function(promoterName, eventSelectedName) {
+    
+      AXIOS.post('/promoteEvent/'.concat(promoterName) +'/'.concat(eventSelectedName), {}, {})
+      .then(response => {
+        this.selectedPromoter = response.data;
+        this.selectedPromoter = '';
+        this.eventSelectedName = '';
+        this.errorAssign = '';
+      })
+      .catch(e => {
+        e = e.response.data.message ? e.response.data.message : e;
+        this.errorAssign = "This Event already has a Promoter";
         console.log(e);
       });
       this.persons.forEach(person => this.getRegistrations(person.name))
