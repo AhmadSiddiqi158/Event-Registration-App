@@ -26,7 +26,7 @@ export default {
       persons: [],
       promoters: [],
       events: [],
-      //theatres: [],
+      theatres: [],
       newPerson: '',
       personType: ['Person', 'Promoter'],
       newEvent: {
