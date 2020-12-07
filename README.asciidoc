@@ -12,7 +12,7 @@ Once you have completed the assignment, please replace the two placeholders with
 
 Backend URL: https://eventregistration-backend-010.herokuapp.com/
 
-Frontend URL: _To be added once ready_
+Frontend URL: https://eventregistration-frontend-010.herokuapp.com/
 
 == Backend
 
